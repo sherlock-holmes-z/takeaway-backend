@@ -90,4 +90,11 @@ public class EmployeeController {
         IPage<Employee> employeePage = employeeService.queryPage(pageQueryDTO);
         return Result.success(employeePage);
     }
+
+    @PostMapping("/status/{status}")
+    public Result<String> updateStatus(@PathVariable Integer status,Long id) {
+        employeeService.updateStatus(id,status);
+        return Result.success();
+    }
+
 }

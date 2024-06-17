@@ -99,4 +99,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return employeePage;
     }
 
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        employeeMapper.updateById(employee);
+    }
+
 }

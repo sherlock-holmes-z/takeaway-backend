@@ -43,13 +43,13 @@ public class Employee implements Serializable {
     private LocalDateTime createTime;
 
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE) // 插入或修改时更新，只用FieldFill.UPDATE,插入时不会插入该字段
     private LocalDateTime updateTime;
 
     @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
 }
