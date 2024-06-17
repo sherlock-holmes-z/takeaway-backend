@@ -16,7 +16,7 @@ import java.io.Serializable;
 @ApiModel(description = "员工登录返回的数据格式")
 public class EmployeeLoginVO implements Serializable {
 
-    @ApiModelProperty("主键值")
+    @ApiModelProperty(value = "主键值",required = true)
     private Long id;
 
     @ApiModelProperty("用户名")
