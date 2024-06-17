@@ -2,12 +2,15 @@ package com.sky.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
@@ -15,6 +18,7 @@ import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +43,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         String password = employeeLoginDTO.getPassword();
 
         //1、根据用户名查询数据库中的数据
-        Employee employee = this.getOne(new LambdaQueryWrapper<Employee>().eq(Employee::getUsername, username));
+
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<Employee>().eq(Employee::getUsername, username);
+        Employee employee = employeeMapper.selectOne(queryWrapper);
 
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (employee == null) {
@@ -64,21 +70,33 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public Boolean saveEmployee(EmployeeDTO employeeDTO) {
+    public void saveEmployee(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.sha256Hex(PasswordConstant.DEFAULT_PASSWORD));
 
-        // todo 使用拦截器更新创建时间，更新时间
+        // todo 使用MybatisPlus拦截器填充用户，时间
 //        LocalDateTime now = LocalDateTime.now();
 //        employee.setCreateTime(now);
 //        employee.setUpdateTime(now);
-//
 //        employee.setCreateUser(1L);
 //        employee.setUpdateUser(1L);
 
-        return this.save(employee);
+        employeeMapper.insert(employee);
+    }
+
+    @Override
+    public IPage<Employee> queryPage(EmployeePageQueryDTO pageQueryDTO) {
+        String name = pageQueryDTO.getName();
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(name), Employee::getName, name);
+
+        Page<Employee> page = new Page<>();
+        page.setPages(pageQueryDTO.getPage());
+        page.setSize(pageQueryDTO.getPageSize());
+        IPage<Employee> employeePage = employeeMapper.selectPage(page, queryWrapper);
+        return employeePage;
     }
 
 }
