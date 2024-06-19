@@ -15,6 +15,7 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,15 +87,35 @@ public class EmployeeController {
 
 
     @GetMapping("/page")
+    @ApiOperation("分页查询员工")
     public Result<IPage<Employee>> pageQuery(EmployeePageQueryDTO pageQueryDTO) {
         IPage<Employee> employeePage = employeeService.queryPage(pageQueryDTO);
         return Result.success(employeePage);
     }
 
     @PostMapping("/status/{status}")
-    public Result<String> updateStatus(@PathVariable Integer status,Long id) {
-        employeeService.updateStatus(id,status);
+    @ApiOperation("修改员工状态")
+    public Result<String> updateStatus(@PathVariable Integer status, Long id) {
+        employeeService.updateStatus(id, status);
         return Result.success();
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation("根据Id获取员工信息")
+    public Result<Employee> update(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        if (employee != null) {
+            employee.setPassword("******");
+        }
+        return Result.success(employee);
+    }
+
+    @PutMapping()
+    @ApiOperation("修改员工信息")
+    public Result<String> update(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employeeService.updateById(employee);
+        return Result.success();
+    }
 }

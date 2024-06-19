@@ -95,8 +95,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         Page<Employee> page = new Page<>();
         page.setPages(pageQueryDTO.getPage());
         page.setSize(pageQueryDTO.getPageSize());
-        IPage<Employee> employeePage = employeeMapper.selectPage(page, queryWrapper);
-        return employeePage;
+//        IPage<Employee> employeePage = employeeMapper.selectPage(page, queryWrapper);
+        return employeeMapper.selectPage(page, queryWrapper);
     }
 
     @Override
