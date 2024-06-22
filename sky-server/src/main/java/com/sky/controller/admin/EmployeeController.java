@@ -1,13 +1,12 @@
 package com.sky.controller.admin;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
@@ -86,15 +85,15 @@ public class EmployeeController {
 
 
     @GetMapping("/page")
-    public Result<IPage<Employee>> pageQuery(EmployeePageQueryDTO pageQueryDTO) {
-        IPage<Employee> employeePage = employeeService.queryPage(pageQueryDTO);
+    public Result<PageResult> pageQuery(EmployeePageQueryDTO pageQueryDTO) {
+        PageResult employeePage = employeeService.queryPage(pageQueryDTO);
         return Result.success(employeePage);
     }
 
-    @PostMapping("/status/{status}")
-    public Result<String> updateStatus(@PathVariable Integer status,Long id) {
-        employeeService.updateStatus(id,status);
-        return Result.success();
-    }
+//    @PostMapping("/status/{status}")
+//    public Result<String> updateStatus(@PathVariable Integer status,Long id) {
+//        employeeService.updateStatus(id,status);
+//        return Result.success();
+//    }
 
 }
