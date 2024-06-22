@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 @Service
@@ -56,10 +57,11 @@ public class EmployeeServiceImpl implements EmployeeService{
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
-        if (employee.getStatus() == StatusConstant.DISABLE) {
+        if (Objects.equals(employee.getStatus(), StatusConstant.DISABLE)) {
             //账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
+
 
         //3、返回实体对象
         return employee;
@@ -90,14 +92,22 @@ public class EmployeeServiceImpl implements EmployeeService{
         return new PageResult(page.getTotal(),page.getResult());
     }
 
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Employee employee = new Employee();
+        employee.setId(id);
+        employee.setStatus(status);
+        employeeMapper.updateById(employee);
+    }
 
-//    @Override
-//    public void updateStatus(Long id, Integer status) {
-//        Employee employee = Employee.builder()
-//                .id(id)
-//                .status(status)
-//                .build();
-//        employeeMapper.updateById(employee);
-//    }
+    @Override
+    public Employee getEmployee(Long id) {
+        return employeeMapper.getById(id);
+    }
+
+    @Override
+    public void updateById(Employee employee) {
+        employeeMapper.updateById(employee);
+    }
 
 }

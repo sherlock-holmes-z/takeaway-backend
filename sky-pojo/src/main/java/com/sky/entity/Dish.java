@@ -47,4 +47,8 @@ public class Dish implements Serializable {
 
     private Long updateUser;
 
+    public static void main(String[] args) {
+
+    }
+
 }

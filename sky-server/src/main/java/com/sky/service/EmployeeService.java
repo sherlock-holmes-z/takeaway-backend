@@ -10,14 +10,20 @@ public interface EmployeeService {
 
     /**
      * 员工登录
-     * @param employeeLoginDTO
-     * @return
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
     void saveEmployee(EmployeeDTO employeeDTO);
 
     PageResult queryPage(EmployeePageQueryDTO pageQueryDTO);
+
+    void updateStatus(Long id, Integer status);
+
+    Employee getEmployee(Long id);
+
+    void updateById(Employee employee);
+
+
 
 //    PageResult<Employee> queryPage(EmployeePageQueryDTO pageQueryDTO);
 //
