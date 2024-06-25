@@ -1,5 +1,6 @@
 package com.sky.config;
 
+import com.sky.constant.FileConstant;
 import com.sky.interceptor.JwtTokenAdminInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +74,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         // /doc.html请求映射到为静态资源，而不是作为一个请求
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        // 前端访问的/upload地址映射到本地文件夹
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + FileConstant.UPLOAD_FILE_PATH);
     }
 
     /**

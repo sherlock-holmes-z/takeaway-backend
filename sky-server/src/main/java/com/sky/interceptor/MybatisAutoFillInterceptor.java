@@ -41,7 +41,8 @@ public class MybatisAutoFillInterceptor implements Interceptor {
         Object param = invocation.getArgs()[1];
         Class<?> paramClass = param.getClass();
 
-        Field[] declaredFields = paramClass.getDeclaredFields();
+        // todo 先解析父类，再解析子类
+        Field[] declaredFields = paramClass.getSuperclass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
             AutoFill annotation = declaredField.getAnnotation(AutoFill.class);
             if (annotation != null) {

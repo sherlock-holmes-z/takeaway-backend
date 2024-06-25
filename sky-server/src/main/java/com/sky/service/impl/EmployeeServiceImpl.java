@@ -76,11 +76,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         employee.setPassword(DigestUtils.sha256Hex(PasswordConstant.DEFAULT_PASSWORD));
 
         // todo 使用Mybatis拦截器填充用户，时间
-        LocalDateTime now = LocalDateTime.now();
-        employee.setCreateTime(now);
-        employee.setUpdateTime(now);
-        employee.setCreateUser(1L);
-        employee.setUpdateUser(1L);
+//        LocalDateTime now = LocalDateTime.now();
+//        employee.setCreateTime(now);
+//        employee.setUpdateTime(now);
+//        employee.setCreateUser(1L);
+//        employee.setUpdateUser(1L);
 
         employeeMapper.insert(employee);
     }

@@ -19,17 +19,17 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @AutoFill(value = FieldFillType.INSERT, type = FieldType.CURRENT_USER)
-    private Long createUser;
+    public Long createUser;
 
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @AutoFill(value = FieldFillType.INSERT, type = FieldType.LOCAL_DATE_TIME)
-    private LocalDateTime createTime;
+    public LocalDateTime createTime;
 
     @AutoFill(value = FieldFillType.INSERT_UPDATE, type = FieldType.LOCAL_DATE_TIME)
-    private LocalDateTime updateTime;
+    public LocalDateTime updateTime;
 
     @AutoFill(value = FieldFillType.INSERT_UPDATE, type = FieldType.CURRENT_USER)
-    private Long updateUser;
+    public Long updateUser;
 
 
 }

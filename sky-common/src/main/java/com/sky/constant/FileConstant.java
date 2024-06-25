@@ -8,5 +8,7 @@ import java.io.File;
  */
 public class FileConstant {
 
-    public static final String uploadFilePath = System.getProperty("user.dir") + File.separator + "upload" + File.separator;
+    public static final String UPLOAD_FILE_PATH = System.getProperty("user.dir") + File.separator + "upload" + File.separator;
+
+    public static final String UPLOAD_FILE_URL = "http://localhost:8080/upload/";
 }

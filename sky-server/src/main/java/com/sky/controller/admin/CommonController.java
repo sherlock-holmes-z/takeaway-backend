@@ -29,23 +29,19 @@ import java.util.UUID;
 public class CommonController {
 
     @PostMapping("/upload")
-    public Result<String> upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        log.info("文件上传:{}", multipartFile);
-        FileOutputStream fileOutputStream = null;
-        try {
-            String filename = multipartFile.getOriginalFilename();
-            filename = UUID.randomUUID() + Objects.requireNonNull(filename).substring(filename.lastIndexOf("."));
-            File file = new File(FileConstant.uploadFilePath + filename);
-            fileOutputStream = new FileOutputStream(file);
-            return Result.success(FileConstant.uploadFilePath + filename);
+    public Result<String> upload(MultipartFile file) {
+        log.info("文件上传:{}", file);
+
+        String filename = file.getOriginalFilename();
+        filename = UUID.randomUUID() + Objects.requireNonNull(filename).substring(filename.lastIndexOf("."));
+        File upFile = new File(FileConstant.UPLOAD_FILE_PATH + filename);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(upFile)) {
+            fileOutputStream.write(file.getBytes());
         } catch (Exception e) {
             log.error(e.getMessage());
-        }finally {
-            if (fileOutputStream != null) {
-                fileOutputStream.close();
-            }
+            return Result.error(MessageConstant.UPLOAD_FAILED);
         }
-        return Result.error(MessageConstant.UPLOAD_FAILED);
+        return Result.success(FileConstant.UPLOAD_FILE_URL + filename);
     }
 
 }

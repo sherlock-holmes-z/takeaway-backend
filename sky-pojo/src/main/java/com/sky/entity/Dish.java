@@ -1,12 +1,12 @@
 package com.sky.entity;
 
+import com.sky.comm.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 菜品
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dish implements Serializable {
+public class Dish extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,16 +39,5 @@ public class Dish implements Serializable {
     //0 停售 1 起售
     private Integer status;
 
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    private Long createUser;
-
-    private Long updateUser;
-
-    public static void main(String[] args) {
-
-    }
 
 }
