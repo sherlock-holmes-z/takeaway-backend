@@ -1,11 +1,15 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,4 +30,18 @@ public class DishController {
         dishService.saveDishWithFlavor(dishDTO);
         return Result.success();
     }
+
+    @GetMapping
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
+        PageResult page = dishService.queryPage(dishPageQueryDTO);
+        return Result.success(page);
+    }
+
+//    @PutMapping("")
+//    public Result<String> update(@RequestBody DishDTO dishDTO){
+//        dishService.updateDishWithFlavor(dishDTO);
+//        return Result.success();
+//    }
+
+
 }
