@@ -5,6 +5,7 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,18 @@ public class DishController {
     @PostMapping("/status/{status}")
     public Result<String> updateStatus(@PathVariable Integer status, Long id) {
         dishService.updateStatus(id,status);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<DishVO> getById(@PathVariable Long id){
+        DishVO dishWithFlavor = dishService.getDishWithFlavor(id);
+        return Result.success(dishWithFlavor);
+    }
+
+    @PutMapping("")
+    public Result<String> updateDish(@RequestBody DishDTO dishDTO){
+        dishService.updateDishWithFlavor(dishDTO);
         return Result.success();
     }
 

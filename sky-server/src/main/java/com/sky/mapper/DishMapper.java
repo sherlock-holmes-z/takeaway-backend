@@ -41,4 +41,6 @@ public interface DishMapper {
     void deleteByIds(List<Long> ids);
 
     void updateById(Dish dish);
+
+    DishVO selectDishWithFlavor(Long id);
 }

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,7 +72,7 @@ public class DishServiceImpl implements DishService {
 
         // 存在套餐的菜品不能删除
         Integer dishCount = setmealDishMapper.selectDishCount(ids);
-        if (dishCount > 0){
+        if (dishCount > 0) {
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
 
@@ -86,5 +87,26 @@ public class DishServiceImpl implements DishService {
         dish.setId(id);
         dish.setStatus(status);
         dishMapper.updateById(dish);
+    }
+
+    @Override
+    public DishVO getDishWithFlavor(Long id) {
+        return dishMapper.selectDishWithFlavor(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateDishWithFlavor(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.updateById(dish);
+
+        // 清空口味，再添加
+        flavorMapper.deleteByDishIds(Collections.singletonList(dishDTO.getId()));
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (!CollectionUtils.isEmpty(flavors)) {
+            flavors.forEach(f -> f.setDishId(dish.getId()));
+            flavorMapper.insertBatch(flavors);
+        }
     }
 }
