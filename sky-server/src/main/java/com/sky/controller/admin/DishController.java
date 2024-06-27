@@ -7,12 +7,9 @@ import com.sky.result.Result;
 import com.sky.service.DishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author chocolate
@@ -26,22 +23,27 @@ public class DishController {
     DishService dishService;
 
     @PostMapping("")
-    public Result<String> save(@RequestBody DishDTO dishDTO){
+    public Result<String> save(@RequestBody DishDTO dishDTO) {
         dishService.saveDishWithFlavor(dishDTO);
         return Result.success();
     }
 
-    @GetMapping
-    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
+    @GetMapping("/page")
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
         PageResult page = dishService.queryPage(dishPageQueryDTO);
         return Result.success(page);
     }
 
-//    @PutMapping("")
-//    public Result<String> update(@RequestBody DishDTO dishDTO){
-//        dishService.updateDishWithFlavor(dishDTO);
-//        return Result.success();
-//    }
+    @DeleteMapping("")
+    public Result<String> delete(@RequestParam List<Long> ids) {
+        dishService.deleteBatch(ids);
+        return Result.success();
+    }
 
+    @PostMapping("/status/{status}")
+    public Result<String> updateStatus(@PathVariable Integer status, Long id) {
+        dishService.updateStatus(id,status);
+        return Result.success();
+    }
 
 }

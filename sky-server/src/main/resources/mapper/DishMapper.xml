@@ -4,11 +4,61 @@
 <mapper namespace="com.sky.mapper.DishMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into dish (name, category_id, price, image, description, status, create_time, update_time, create_user, update_user)
-        VALUES (#{name},#{categoryId},#{price},#{image},#{description},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
+        insert into dish (name, category_id, price, image, description, status, create_time, update_time, create_user,
+                          update_user)
+        VALUES (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime},
+                #{createUser}, #{updateUser})
     </insert>
 
-    <select id="selectList" resultType="com.sky.vo.DishVO">
-        select * from dish a left join category b on a.category_id = b.id
+    <update id="updateById">
+        update dish
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByIds">
+        delete from dish where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectPage" resultType="com.sky.vo.DishVO">
+        select a.*,b.name as categoryName from dish a
+        left join category b on a.category_id = b.id
+        <where>
+            <if test="name != null and name != ''">
+                and a.name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and b.id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+
+    <select id="selectList" resultType="com.sky.entity.Dish">
+        select * from dish
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="selectEnableCount" resultType="java.lang.Integer">
+        select count(*) from dish
+        where status = 1
+        and id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
     </select>
 </mapper>
