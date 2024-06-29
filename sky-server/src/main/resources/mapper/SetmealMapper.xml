@@ -8,5 +8,94 @@
         VALUES (#{categoryId}, #{name}, #{price}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser})
     </insert>
+    <update id="updateById">
+        update setmeal
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="description != null and description!= ''">
+                `description` = #{description},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectPage" resultType="com.sky.entity.Setmeal">
+        select * from setmeal
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectById" resultType="com.sky.entity.Setmeal">
+        select *
+        from setmeal
+        where id = #{id}
+    </select>
+    <select id="selectSetmealWithDish" resultMap="SetmealVO">
+        select a.id,
+               a.category_id,
+               a.name,
+               a.price,
+               a.status,
+               a.description,
+               a.image,
+               a.update_time,
+               b.name   as categoryName,
+               c.id     as setmealDishId,
+               c.name   as setmealDishName,
+               c.price  as setmealDishPrice,
+               c.copies as setmealDishCopies
+        from setmeal a
+                 left join category b on a.category_id = b.id
+                 left join setmeal_dish c on a.id = c.setmeal_id
+        where a.id = #{id}
+    </select>
+    <resultMap id="SetmealVO" type="com.sky.vo.SetmealVO">
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="description" property="description"/>
+        <result column="image" property="image"/>
+        <result column="status" property="status"/>
+        <result column="update_time" property="updateTime"/>
+        <collection property="setmealDishes" ofType="com.sky.entity.SetmealDish">
+            <id column="setmealDishId" property="id"/>
+            <result column="setmealDishName" property="name"/>
+            <result column="setmealDishPrice" property="price"/>
+            <result column="setmealDishCopies" property="copies"/>
+        </collection>
+    </resultMap>
+
 
 </mapper>
