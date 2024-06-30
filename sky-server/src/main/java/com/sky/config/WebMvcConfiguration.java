@@ -51,14 +51,32 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Bean
     public Docket docket() {
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("takeaway项目文档")
+                .title("takeaway管理端项目文档")
                 .version("2.0")
-                .description("takeaway-backend项目接口文档")
+                .description("takeaway-backend管理端项目接口文档")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("管理端接口")
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller")) // 指定生成接口需要扫描的包
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.admin")) // 指定生成接口需要扫描的包
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }
+
+    @Bean
+    public Docket docket2() {
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("takeaway用户端项目文档")
+                .version("2.0")
+                .description("takeaway-backend项目用户端接口文档")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("用户端接口")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.user")) // 指定生成接口需要扫描的包
                 .paths(PathSelectors.any())
                 .build();
         return docket;

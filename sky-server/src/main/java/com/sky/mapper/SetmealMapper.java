@@ -7,6 +7,8 @@ import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface SetmealMapper {
 
@@ -27,4 +29,7 @@ public interface SetmealMapper {
     SetmealVO selectSetmealWithDish(Long id);
 
     void updateById(Setmeal setmeal);
+
+    void deleteBatch(List<Long> ids);
+
 }

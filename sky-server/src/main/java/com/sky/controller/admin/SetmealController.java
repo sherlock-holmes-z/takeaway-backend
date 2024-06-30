@@ -9,13 +9,9 @@ import com.sky.result.Result;
 import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * SetmealController
@@ -59,4 +55,9 @@ public class SetmealController {
         return Result.success();
     }
 
+    @DeleteMapping("")
+    public Result<String> delete(@RequestParam List<Long> ids){
+        setmealService.deleteSetmealWithDish(ids);
+        return Result.success();
+    }
 }

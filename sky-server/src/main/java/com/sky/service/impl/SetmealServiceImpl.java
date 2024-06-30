@@ -71,6 +71,7 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     @Override
+    @Transactional
     public void updateSetmealWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -81,5 +82,11 @@ public class SetmealServiceImpl implements SetmealService {
             return;
         }
         setmealDishMapper.insertBatch(setmealDTO.getSetmealDishes());
+    }
+
+    @Override
+    public void deleteSetmealWithDish(List<Long> ids) {
+        setmealMapper.deleteBatch(ids);
+        setmealDishMapper.deleteBySetmealIds(ids);
     }
 }

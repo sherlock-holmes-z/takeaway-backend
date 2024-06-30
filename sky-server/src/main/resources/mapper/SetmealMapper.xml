@@ -8,6 +8,7 @@
         VALUES (#{categoryId}, #{name}, #{price}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser})
     </insert>
+
     <update id="updateById">
         update setmeal
         <set>
@@ -39,6 +40,13 @@
         where id = #{id}
     </update>
 
+    <delete id="deleteBatch">
+        delete from setmeal where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="selectPage" resultType="com.sky.entity.Setmeal">
         select * from setmeal
         <where>
@@ -60,6 +68,7 @@
         from setmeal
         where id = #{id}
     </select>
+
     <select id="selectSetmealWithDish" resultMap="SetmealVO">
         select a.id,
                a.category_id,
@@ -96,6 +105,5 @@
             <result column="setmealDishCopies" property="copies"/>
         </collection>
     </resultMap>
-
 
 </mapper>

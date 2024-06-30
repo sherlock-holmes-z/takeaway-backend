@@ -51,6 +51,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
 
             // todo 防止内存泄漏，在set前先remove
+            BaseContext.removeCurrentId();
             // 员工ID加入ThreadLocal,供后续使用
             BaseContext.setCurrentId(empId);
             log.info("当前员工id：{}", empId);

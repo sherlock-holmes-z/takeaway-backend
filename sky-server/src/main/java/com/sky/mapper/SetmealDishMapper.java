@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.entity.SetmealDish;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,5 +20,9 @@ public interface SetmealDishMapper {
 
     void insertBatch(List<SetmealDish> setmealDishes);
 
-    void deleteBySetmealId(Long setmealId);
+    default void deleteBySetmealId(Long setmealId){
+        deleteBySetmealIds(Collections.singletonList(setmealId));
+    };
+
+    void deleteBySetmealIds(List<Long> setmealIds);
 }
