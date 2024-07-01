@@ -1,5 +1,6 @@
 package com.sky.controller.user;
 
+import com.sky.result.Result;
 import com.sky.service.ShopService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ShopController {
     ShopService shopService;
 
     @GetMapping("/status")
-    public Integer getStatus() {
-        return shopService.getStatus();
+    public Result<Integer> getStatus() {
+        return Result.success(shopService.getStatus());
     }
 }
