@@ -42,5 +42,5 @@ public interface DishMapper {
 
     void updateById(Dish dish);
 
-    DishVO selectDishWithFlavor(Long id);
+    List<DishVO> selectDishWithFlavor(Dish dish);
 }

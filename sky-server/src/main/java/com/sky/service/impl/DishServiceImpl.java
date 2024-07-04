@@ -15,7 +15,6 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
-import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,8 +90,9 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public DishVO getDishWithFlavor(Long id) {
-        return dishMapper.selectDishWithFlavor(id);
+    public DishVO getDishWithFlavor(Dish dish) {
+        List<DishVO> list = dishMapper.selectDishWithFlavor(dish);
+        return CollectionUtils.isEmpty(list) ? null : list.get(0);
     }
 
     @Override
@@ -117,5 +117,10 @@ public class DishServiceImpl implements DishService {
         dish.setCategoryId(categoryId);
         dish.setStatus(StatusConstant.ENABLE);
         return dishMapper.selectList(dish);
+    }
+
+    @Override
+    public List<DishVO> listDishWithFlavor(Dish dish) {
+        return dishMapper.selectDishWithFlavor(dish);
     }
 }

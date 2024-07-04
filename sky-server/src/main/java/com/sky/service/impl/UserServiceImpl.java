@@ -39,15 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserLoginVO wxLogin(UserLoginDTO userLoginDTO) {
         // 调用微信接口服务，获取用户的唯一标识openid
-        HashMap<String, String> map = new HashMap<>();
-        map.put("appid", weChatProperties.getAppid());
-        map.put("secret", weChatProperties.getSecret());
-        map.put("js_code", userLoginDTO.getCode());
-        map.put("grant_type", "authorization_code");
-        String doGet = HttpClientUtil.doGet("https://api.weixin.qq.com/sns/jscode2session", map);
-
-        JSONObject jsonObject = JSONObject.parseObject(doGet);
-        String openid = jsonObject.getString("openid");
+        String openid = getOpenid(userLoginDTO);
 
         // 判断openid是否为空，如果为空，则表示登录失败
         if (StringUtils.isBlank(openid)) {
@@ -75,5 +67,17 @@ public class UserServiceImpl implements UserService {
                 .openid(user.getOpenid())
                 .token(token)
                 .build();
+    }
+
+    private String getOpenid(UserLoginDTO userLoginDTO) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("appid", weChatProperties.getAppid());
+        map.put("secret", weChatProperties.getSecret());
+        map.put("js_code", userLoginDTO.getCode());
+        map.put("grant_type", "authorization_code");
+        String doGet = HttpClientUtil.doGet("https://api.weixin.qq.com/sns/jscode2session", map);
+
+        JSONObject jsonObject = JSONObject.parseObject(doGet);
+        return jsonObject.getString("openid");
     }
 }

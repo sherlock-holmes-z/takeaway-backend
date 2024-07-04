@@ -88,6 +88,26 @@
                  left join setmeal_dish c on a.id = c.setmeal_id
         where a.id = #{id}
     </select>
+
+    <select id="selectList" resultType="com.sky.entity.Setmeal">
+        select * from setmeal
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="selectDishItemById" resultType="com.sky.vo.DishItemVO">
+        select a.name, a.copies, b.image, b.description
+        from setmeal_dish a
+                 left join dish b
+                           on a.dish_id = b.id
+        where a.setmeal_id = #{id}
+    </select>
+
     <resultMap id="SetmealVO" type="com.sky.vo.SetmealVO">
         <id column="id" property="id"/>
         <result column="category_id" property="categoryId"/>

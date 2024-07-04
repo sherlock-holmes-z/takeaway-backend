@@ -93,8 +93,18 @@
     <select id="selectDishWithFlavor" resultMap="dishVo">
         select a.*, df.id df_id, df.name df_name, df.value
         from dish a
-                 left join dish_flavor df on a.id = df.dish_id
-        where a.id = #{id}
+        left join dish_flavor df on a.id = df.dish_id
+        <where>
+            <if test="id != null ">
+                and a.id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and a.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
     </select>
 
     <resultMap id="dishVo" type="com.sky.vo.DishVO">
