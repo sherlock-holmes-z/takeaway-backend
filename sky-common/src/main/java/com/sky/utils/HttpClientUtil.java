@@ -1,6 +1,6 @@
 package com.sky.utils;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -140,9 +140,7 @@ public class HttpClientUtil {
             if (paramMap != null) {
                 //构造json格式数据
                 JSONObject jsonObject = new JSONObject();
-                for (Map.Entry<String, String> param : paramMap.entrySet()) {
-                    jsonObject.put(param.getKey(),param.getValue());
-                }
+                jsonObject.putAll(paramMap);
                 StringEntity entity = new StringEntity(jsonObject.toString(),"utf-8");
                 //设置请求编码
                 entity.setContentEncoding("utf-8");
